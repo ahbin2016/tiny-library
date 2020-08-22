@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Slf4j
 @Transactional
@@ -63,6 +66,19 @@ public class RecordService {
   private void validateUser(User user, int count) {
     if (user.getCountBook() >= count) {
       throw new CustomTinyLibraryException("Maximum borrowed book reached!");
+    }
+  }
+
+  public List<Record> findAll(Long userId) {
+    return recordRepository.findAllByUserId(userId);
+  }
+
+  public void checkBookUnderUser(List<Record> records, Long bookId) {
+    List<Record> unReturnBooks =
+        records.stream().filter(r -> r.getReturnDate() == null).collect(Collectors.toList());
+    List<Long> ids = unReturnBooks.stream().map(Record::getBookId).collect(Collectors.toList());
+    if (!ids.contains(bookId)) {
+      throw new CustomTinyLibraryException("Book is not under the User Borrowed List");
     }
   }
 }

@@ -27,6 +27,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -105,6 +106,8 @@ public class RecordResource {
     if (null == book) {
       throw new CustomTinyLibraryException("Book not Found!");
     }
+    List<Record> records = recordService.findAll(record.getUserId());
+    recordService.checkBookUnderUser(records, record.getBookId());
     Record result = recordService.saveRecord(record, count, user, book, Constant.ACTION_RETURN);
     return new ResponseEntity<>(result, HttpStatus.OK);
   }
