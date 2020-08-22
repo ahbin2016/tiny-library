@@ -1,8 +1,9 @@
-#Tiny Library
-##Introduction
+# Tiny Library
+
+## Introduction
 Develop a management system for a tiny library. Generally, it serves RESTful APIs which accept admin's requests to add, update and delete books; users can register accounts into the system, borrow up to 5 books at most and return books through another set of RESTful APIs; running only one instance is enough, no need to worry about scalability; all data doesn't need to be persisted, save in memory is acceptable.
 
-##Requirements
+## Requirements
 Detailed requirements as below:
 
 1.Book management
@@ -67,11 +68,11 @@ Detailed requirements as below:
  - And other things as needed.
 
 
-##Build and deployment
+## Build and deployment
  - Developer needs to write a README file to describe how to build(if applicable) and deploy the project. It is greatly appreciated that by following the README file, customer can get the service run without any problem.
  
  
-##Building the Application
+## Building the Application
 1. tiny-library - build as mvn clean install and run as springboot application
 2. It will run in default port 8080
 3. Application is running using H2-in memory database. To access the H2 Console, navigate to 
@@ -81,7 +82,7 @@ http://localhost:8080/h2
  - Look for the url and username in the application properties
 
 ## To Test the Application
-###BOOK API
+### BOOK API
 1.To create book details
 ```
 curl --location --request POST 'http://localhost:8080/api/books' \
