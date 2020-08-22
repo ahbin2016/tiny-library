@@ -8,6 +8,7 @@ import com.example.tinylibrary.service.RecordService;
 import com.example.tinylibrary.service.UserService;
 import com.example.tinylibrary.util.Constant;
 import com.example.tinylibrary.util.DateUtil;
+import com.example.tinylibrary.web.exception.CustomTinyLibraryException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -66,7 +67,13 @@ public class RecordResource {
     record.setBorrowDate(new Date());
     record.setExpiryDate(DateUtil.setExpiryDate(duration));
     User user = userService.searchUser(record.getUserId());
+    if (null == user) {
+      throw new CustomTinyLibraryException("User Not Found!");
+    }
     Book book = bookService.findBookById(record.getBookId());
+    if (null == book) {
+      throw new CustomTinyLibraryException("Book not Found!");
+    }
     Record result = recordService.saveRecord(record, count, user, book, Constant.ACTION_BORROW);
     return ResponseEntity.created(new URI("/api/books/borrow" + result.getId())).body(result);
   }
@@ -91,7 +98,13 @@ public class RecordResource {
     log.info("REST request to update borrow book record : {}", record.toString());
     record.setReturnDate(new Date());
     User user = userService.searchUser(record.getUserId());
+    if (null == user) {
+      throw new CustomTinyLibraryException("User Not Found!");
+    }
     Book book = bookService.findBookById(record.getBookId());
+    if (null == book) {
+      throw new CustomTinyLibraryException("Book not Found!");
+    }
     Record result = recordService.saveRecord(record, count, user, book, Constant.ACTION_RETURN);
     return new ResponseEntity<>(result, HttpStatus.OK);
   }
